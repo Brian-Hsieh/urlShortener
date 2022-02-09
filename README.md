@@ -2,7 +2,6 @@
 
 ShortLink is an URL shortener service written in [flask](https://flask.palletsprojects.com/en/2.0.x/) which provides 2 endpoints on encoding and decoding the URL. The original long URL can be encoded into a short URL and the shortened URL can be decoded into the original URL. Both endpoints return the JSON to the web page including the original URL and the shortened URL.
 ## Installation
----
 Create a virtual environment if needed
 
 Install required packages with pip:
@@ -10,7 +9,6 @@ Install required packages with pip:
 pip install -r requirements.txt
 ```
 ## Unit testing
----
 Unittest is required to run the test. It is included in standard library in Python 2.1 and above.
 
 Test the service with:
@@ -18,7 +16,6 @@ Test the service with:
 python test.py
 ```
 ## Execution
----
 Start the service with:
 ```
 python api.py
