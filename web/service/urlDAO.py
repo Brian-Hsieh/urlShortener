@@ -1,9 +1,9 @@
-from web.url_shortener import UrlShortener
+from web.url_shortener.shortener import UrlShortener
 from web.static.constant import CODE_STRING_LENGTH
-from web.model import Urls
+from web.model.model import Urls
 from flask import url_for
 from flask_restx import abort
-
+from web import db
 
 class UrlDAO():
 
@@ -34,7 +34,7 @@ class UrlDAO():
             'longUrl': longUrl,
             'shortUrl': shortUrl
         }
-        return response
+        return response, 201
 
     def getLongUrl(self, shortUrl):
 
@@ -55,4 +55,6 @@ class UrlDAO():
             'longUrl': urlData.longUrl,
             'shortUrl': shortUrl
         }
-        return response
+        return response, 200
+
+urlDAO = UrlDAO(db)
