@@ -1,28 +1,29 @@
-from flask import Blueprint, render_template, jsonify, request
-from web.service import urlDAO
+from flask import jsonify, request
+from flask_restx import Resource
+from web.service.urlDAO import urlDAO
+from web.utils.urlDTO import UrlDTO
 
-routes = Blueprint("routes", __name__)
+route = UrlDTO.route
+url = UrlDTO.url
 
-@routes.route('/')
-def home():
-    pass
-    # return render_template("base.html")
+@route.route('/encode')
+class Encode(Resource):
 
-@routes.route('/encode/<longUrl>', methods=['POST'])
-def encode():
-    '''Encode long URL to short URL'''
-    return urlDAO.createShortUrl(longUrl), 201
+    @route.doc('encode long url')
+    @route.response(201, 'Url successfully encoded.')
+    @route.marshal_with(url)
+    def post(self):
+        '''Encode long url to short url'''
+        longUrl = request.json
+        return urlDAO.createShortUrl(longUrl = longUrl)
 
-@routes.route('/decode/<shortUrl>', methods=['GET'])
-def decode():
-    return urlDAO.getLongUrl(shortUrl)
+@route.route('/decode')
+class Decode(Resource):
 
-@routes.errorhandler(404)
-@routes.errorhandler(500)
-def handleError(e):
-    response = {
-        'code': e.code,
-        'name': e.name,
-        'description': e.description
-    }
-    return jsonify(response), e.code
+    @route.doc('decode short url')
+    @route.response(404, 'No corresponding long url being found.')
+    @route.marshal_with(url)
+    def get(self):
+        '''Decode short url to long url'''
+        shortUrl = request.json
+        return urlDAO.getLongUrl(shortUrl = shortUrl)
